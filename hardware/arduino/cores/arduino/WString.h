@@ -39,6 +39,7 @@ class String
     String( const unsigned long, const int base=10 );
     ~String() { free(_buffer); _length = _capacity = 0;}     //added _length = _capacity = 0;
 
+	void reserve(unsigned int size);
     // operators
     const String & operator = ( const String &rhs );
     const String & operator +=( const String &rhs );
