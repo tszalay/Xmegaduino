@@ -40,6 +40,7 @@ class String
     ~String() { free(_buffer); _length = _capacity = 0;}     //added _length = _capacity = 0;
 
 	void reserve(unsigned int size);
+	
     // operators
     const String & operator = ( const String &rhs );
     const String & operator +=( const String &rhs );

@@ -251,6 +251,7 @@ void String::reserve(unsigned int size)
 	}
 }
 
+
 boolean String::endsWith( const String &s2 ) const
 {
 	if ( _length < s2._length || !_buffer || !s2._buffer) return 0;
@@ -406,7 +407,6 @@ boolean String::startsWith( const String &s2, unsigned int offset ) const
 
   return strncmp( &_buffer[offset], s2._buffer, s2._length ) == 0;
 }
-
 
 String String::substring( unsigned int left ) const
 {
