@@ -115,14 +115,14 @@ public abstract class Uploader implements MessageConsumer  {
     try {
       String[] commandArray = new String[commandDownloader.size()];
       commandDownloader.toArray(commandArray);
-      
+	  
       if (verbose || Preferences.getBoolean("upload.verbose")) {
         for(int i = 0; i < commandArray.length; i++) {
           System.out.print(commandArray[i] + " ");
         }
         System.out.println();
       }
-      Process process = Runtime.getRuntime().exec(commandArray);
+      Process process = Runtime.getRuntime().exec(commandArray[i]);
       new MessageSiphon(process.getInputStream(), this);
       new MessageSiphon(process.getErrorStream(), this);
 

@@ -148,7 +148,7 @@ public class AvrdudeUploader extends Uploader  {
         if (caterinaUploadPort == null)
           // Something happened while detecting port
           throw new RunnerException(
-              _("Couldnâ€™t find a Leonardo on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."));
+              _("Couldn’t find a Leonardo on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."));
         
         uploadPort = caterinaUploadPort;
       } catch (SerialException e) {
@@ -172,7 +172,18 @@ public class AvrdudeUploader extends Uploader  {
       flushSerialBuffer();
     }
 
-    boolean avrdudeResult = avrdude(commandDownloader);
+    boolean avrdudeResult = false;
+
+    System.out.println("using: " + boardPreferences.get("upload.using"));
+
+    if (boardPreferences.get("upload.using").equals("flip")) {
+      commandDownloader.clear();
+      commandDownloader.add(buildPath + File.separator + className + ".hex");
+      avrdudeResult = avrflip(commandDownloader);
+    }
+    else {
+      avrdudeResult = avrdude(commandDownloader);
+    }
 
 	// For Leonardo wait until the bootloader serial port disconnects and the sketch serial
 	// port reconnects (or timeout after a few seconds if the sketch port never comes back).
@@ -330,6 +341,35 @@ public class AvrdudeUploader extends Uploader  {
     commandDownloader.add("-p" + Base.getBoardPreferences().get("build.mcu"));
     commandDownloader.addAll(params);
 
+    return executeUploadCommand(commandDownloader);
+  }
+
+  /* Use FLIP programmer instead of avrdude. Also write comments for functions. */
+  public boolean avrflip(Collection params) throws RunnerException {
+    List commandDownloader = new ArrayList();
+    
+    commandDownloader.add("batchisp");
+    commandDownloader.add("-device");
+    commandDownloader.add("ATXMEGA128A1");
+    commandDownloader.add("-hardware RS232");
+    commandDownloader.add("-port");
+    commandDownloader.add(Preferences.get("serial.port"));
+    commandDownloader.add("-baudrate");
+    commandDownloader.add(Base.getBoardPreferences().get("upload.speed"));
+    commandDownloader.add("-operation onfail abort");
+    commandDownloader.add("memory flash");
+    commandDownloader.add("erase f");
+    commandDownloader.add("blankcheck");
+    commandDownloader.add("loadbuffer");
+    commandDownloader.addAll(params);
+    commandDownloader.add("program verify");
+    commandDownloader.add("start reset 0");
+	
+	String fullCmd = "";
+	for(int i = 0; i < commandDownloader.length; i++)
+	  fullCmd += commandDownloader[i] + " ";
+	commandDownloader.clear();
+	commandDownloader.add(fullCmd);
     return executeUploadCommand(commandDownloader);
   }
 }

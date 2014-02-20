@@ -205,6 +205,34 @@ xplain_pdi.bootloader.fuse5=0xFD
 
 ##############################################################
 
+xplain_flip.name=XPlain using flip
+
+xplain_flip.build.mcu=atxmega128a1
+xplain_flip.build.f_cpu=32000000L
+xplain_flip.build.core=xmega
+xplain_flip.build.variant=xplain
+
+xplain_flip.upload.using=flip
+xplain_flip.upload.protocol=dummy
+xplain_flip.upload.speed=115200
+
+xplain_flip.bootloader.path=xplain
+xplain_flip.bootloader.file= 
+
+# FUSE BITS
+# fuse0: JTAGUSERID
+# fuse1: WDWP=0xF WDP=0xF
+# fuse2: Boot Loader Reset
+# fuse4: JTAGEN
+# fuse5: BODLVL=2.1V
+xplain_flip.bootloader.fuse0=0xFF
+xplain_flip.bootloader.fuse1=0xFF
+xplain_flip.bootloader.fuse2=0xBF
+xplain_flip.bootloader.fuse4=0xFE
+xplain_flip.bootloader.fuse5=0xFD
+
+##############################################################
+
 akafuino.name=Akafuino X
 
 akafuino.build.mcu=atxmega32a4
